@@ -31,7 +31,7 @@ def lambda_handler(event, context):
                 "base_path": path
             }
         }
-        url = i['domain'] + "/_snapshot/s3_repository"
+        url = i['domain'] + "/_snapshot/lambda_s3_repository"
 
     # create repository
         response = requests.put(
