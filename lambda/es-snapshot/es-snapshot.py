@@ -3,6 +3,7 @@ import boto3
 import json
 import requests
 import datetime
+import sys
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -12,7 +13,6 @@ dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
 
 # change this to whatever your table name is
 table = dynamodb.Table('elasticsearch-backups')
-now = datetime.datetime.now()
 
 # I don't fully understand the reason for this. Following example
 # http://docs.aws.amazon.com/amazondynamodb/latest/gettingstartedguide/GettingStarted.Python.04.html
@@ -23,6 +23,8 @@ ean = {"#dmn": "domain", "#pth": "path", "#bkt": "bucket"}
 # This is the method that will be registered
 # with Lambda and run on a schedule
 def handler(event={}, context={}):
+    now = datetime.datetime.now()
+
     logger.info("started")
 
     logger.info("scanning table")
@@ -56,18 +58,28 @@ def handler(event={}, context={}):
 
         # create repository
         logger.info("creating repository")
-        response = requests.put(
-            url,
-            data=json.dumps(repository)
-            )
+        try:
+            response = requests.put(
+                url,
+                data=json.dumps(repository)
+                )
+        except requests.exceptions.RequestException as e:
+            logger.error(e)
+            sys.exit(1)
+
         logger.info(response.content)
 
         # start snapshot
         logger.info("starting snapshot")
         url = url + "/" + str(now.strftime("%Y-%m-%dt%H:%M"))
-        response = requests.put(
-            url
-            )
+        try:
+            response = requests.put(
+                url
+                )
+        except requests.exceptions.RequestException as e:
+            logger.error(e)
+            sys.exit(2)
+
         logger.info(response.content)
         logger.info("new snapshot started at " + url)
 
