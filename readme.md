@@ -17,22 +17,12 @@ REQUIRES:
 
 ## Getting Started
 
-1) Test the lambda function
+1.  Test the lambda function
+        python lambda/es-snapshot/es-snapshot.py
+2.  create zip
+        ./build.sh
+3.  Create Lambda function using zip file.
 
-    python lambda/es-snapshot/es-snapshot.py
-
-2) Deploy the sample Lambda function to AWS
-
-    lambder functions deploy
-
-3) Invoke the sample Lambda function in AWS
-
-    lambder functions invoke
-
-4) Add useful code to lambda/es-snapshot/es-snapshot.py
-
-5) Add any permissions you need to access other AWS resources to iam/policy.json
-
-6) Update your lambda and permissions policy in one go
-
-    lambder functions deploy
+## Notes
+1. The iam and input dirs, as well as lambder.json are for use by Lambder. You can use Lambder for testing, but it is not part of our workflow at this time.
+2. The Dockerfile is included only for testing purposes.
