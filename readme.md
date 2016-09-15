@@ -12,9 +12,6 @@ Each entry in the Dynamo table needs to have the following three keys:
 
 When triggered, the function will loop over all entries in the table, register an S3 repository named `s3_repository` and initiate a full snapshot.
 
-REQUIRES:
-* python-lambder
-
 ## Getting Started
 
 1.  Test the lambda function
